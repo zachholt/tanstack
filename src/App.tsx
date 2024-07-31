@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import './App.css';
+import DataDisplay from './components/DataDisplay';
+import { DataDisplayProps } from "./components/types";
+import AddAlbumForm from "./components/AddAlbumForm";
 
-function App() {
+export default function App() {
+  const [data, setData] = useState<DataDisplayProps[]>([]);
+
+  useEffect(() => {
+    axios.get("https://jsonplaceholder.typicode.com/albums/")
+      .then((response) => {
+        setData(response.data);
+        console.log(response.data);
+      });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <DataDisplay data={data} />
+      <AddAlbumForm/>
     </div>
   );
 }
-
-export default App;
