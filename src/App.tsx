@@ -1,25 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import './App.css';
+// src/App.js
+import React from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import DataDisplay from './components/DataDisplay';
-import { DataDisplayProps } from "./components/types";
-import AddAlbumForm from "./components/AddAlbumForm";
 
-export default function App() {
-  const [data, setData] = useState<DataDisplayProps[]>([]);
+const queryClient = new QueryClient();
 
-  useEffect(() => {
-    axios.get("https://jsonplaceholder.typicode.com/albums/")
-      .then((response) => {
-        setData(response.data);
-        console.log(response.data);
-      });
-  }, []);
-
+function App() {
   return (
-    <div className="App">
-      <DataDisplay data={data} />
-      <AddAlbumForm/>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <DataDisplay />
+      </div>
+    </QueryClientProvider>
   );
 }
+
+export default App;

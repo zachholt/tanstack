@@ -1,12 +1,24 @@
-import React from "react"; 
-import { DataDisplayProps } from "./types";
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-export default function DataDisplay( {data}: {data:DataDisplayProps[]}) {
+const DataDisplay = () => {
+  const { data, isLoading, error } = useQuery<any[]>({
+    queryKey: ['albums'],
+    queryFn: async () => {
+      return (await axios.get('https://jsonplaceholder.typicode.com/albums')).data
+    },
+  })
+
   return (
-    <ul>
-      {data.map((data) => (
-        <li key={data.id}>{data.title}</li>
-      ))}
-    </ul>
+    <div>
+      <ul>
+        {data?.map((album) => (
+          <li key={album.id}>{album.title}</li>
+        ))}
+      </ul>
+    </div>
   );
-}
+};
+
+export default DataDisplay;
